@@ -21,9 +21,8 @@
 \def\@@papersize{a4paper}
 \DeclareOptionX{a4paper}{\def\@@papersize{a4paper}}
 \DeclareOptionX{letterpaper}{\def\@@papersize{letterpaper}}
-\def\@@solutionmode{1} % default as the solution mode
-\DeclareOptionX{solution}{\def\@@solutionmode{1}} % solution mode
-\DeclareOptionX{problem}{\def\@@solutionmode{0}} % problem mode
+\def\@@mmcesim{0}
+\DeclareOptionX{mmcesim}{\def\@@mmcesim{1}} % solution mode
 \def\@twoside{0} % default as oneside
 \DeclareOptionX{oneside}{\def\@twoside{0}} % one-side document
 \DeclareOptionX{twoside}{\def\@twoside{1}} % two-side document
@@ -46,6 +45,12 @@
 \newcommand{\rtime}[1]{\gdef\@rtime{#1}} % report generation time
 \newcommand{\version}[1]{\gdef\@version{#1}} % simulation app version
 \newcommand{\logo}[1]{\gdef\@logo{#1}} % simulation app logo
+
+\if\@@mmcesim1
+  \logo{fig/mmCEsim_logo_256.png}
+  \simapp{mmCEsim}
+  \version{0.1.0}
+\fi
 
 % additional height for footer on the first page
 \newcommand{\firstfooteradditionalheight}{\ifx\@logo\@empty30pt\else60pt\fi}
@@ -108,4 +113,16 @@
   \endgroup
   \thispagestyle{firstpage}
   \enlargethispage{-\firstfooteradditionalheight} % make room for the footer
+}
+
+\RequirePackage{pgfplotstable}
+\RequirePackage{booktabs}
+\RequirePackage{xcolor}
+\pgfplotstableset{
+  every head row/.style={before row=\toprule, after row=\midrule},
+  every last row/.style={after row=\bottomrule},
+  fixed, fixed zerofill, precision=2,
+  column type=c,
+  columns/Algorithm/.style={string type},
+  display columns/0/.style={fixed=false,fixed zerofill=false}
 }
